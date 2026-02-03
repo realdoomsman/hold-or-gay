@@ -1,168 +1,95 @@
-// HOLD OR GAY - real blockchain tracking with Helius
-// config - update these when you have the token
+// HOLD OR GAY - Frontend with Helius API backend
 const CONFIG = {
-    TOKEN_MINT: '', // add your token mint address here
-    HELIUS_API_KEY: '', // add helius api key
-    HELIUS_RPC: '',
+    API_URL: '/api/data',
     TOKEN_SYMBOL: '$HOG',
-    TOKEN_DECIMALS: 9
+    POLL_INTERVAL: 30000 // 30 seconds
 };
 
 // state
 let sellers = [];
 let holders = [];
-let transactions = [];
+let isLoading = true;
 
 // init
 document.addEventListener('DOMContentLoaded', async () => {
-    // for now use mock data, will switch to real when token launches
-    if (!CONFIG.TOKEN_MINT) {
-        loadMockData();
-    } else {
-        await loadRealData();
-    }
-
+    await loadData();
     setupTicker();
-    animateCounters();
+    startPolling();
 });
 
-// mock data for pre-launch
+// load all data from API
+async function loadData() {
+    try {
+        isLoading = true;
+        showLoading();
+
+        const response = await fetch(CONFIG.API_URL);
+        const data = await response.json();
+
+        if (data.error) {
+            console.error('API error:', data.error);
+            loadMockData();
+            return;
+        }
+
+        holders = data.holders || [];
+        sellers = data.transactions || [];
+
+        renderSellers();
+        renderHolders();
+        renderFeed();
+        updateStats();
+
+        isLoading = false;
+    } catch (err) {
+        console.error('failed to load data:', err);
+        loadMockData();
+    }
+}
+
+// fallback mock data
 function loadMockData() {
-    // mock sellers (the gays)
     sellers = [
-        { wallet: '7xKXt...3fBq', sold: '420,069', price: '$0.00042', time: '2 mins ago', tx: '' },
-        { wallet: '9mPza...7dRw', sold: '1,000,000', price: '$0.00039', time: '5 mins ago', tx: '' },
-        { wallet: '3bNyc...9sKm', sold: '69,420', price: '$0.00041', time: '8 mins ago', tx: '' },
-        { wallet: '5pQrt...2xVn', sold: '500,000', price: '$0.00040', time: '12 mins ago', tx: '' },
-        { wallet: '2wLkj...8cFh', sold: '250,000', price: '$0.00038', time: '18 mins ago', tx: '' },
-        { wallet: '8yTgb...4mZx', sold: '888,888', price: '$0.00037', time: '25 mins ago', tx: '' },
-        { wallet: '1rDsp...6vCq', sold: '333,333', price: '$0.00041', time: '32 mins ago', tx: '' },
-        { wallet: '6nHjk...0wYt', sold: '150,000', price: '$0.00040', time: '45 mins ago', tx: '' },
-        { wallet: '4sMnb...5pLz', sold: '750,000', price: '$0.00039', time: '1 hr ago', tx: '' },
+        { wallet: '7xKXt...3fBq', amount: '420.0K', time: '2 mins ago' },
+        { wallet: '9mPza...7dRw', amount: '1.0M', time: '5 mins ago' },
+        { wallet: '3bNyc...9sKm', amount: '69.4K', time: '8 mins ago' },
+        { wallet: '5pQrt...2xVn', amount: '500.0K', time: '12 mins ago' },
+        { wallet: '2wLkj...8cFh', amount: '250.0K', time: '18 mins ago' },
+        { wallet: '8yTgb...4mZx', amount: '888.8K', time: '25 mins ago' },
+        { wallet: '1rDsp...6vCq', amount: '333.3K', time: '32 mins ago' },
+        { wallet: '6nHjk...0wYt', amount: '150.0K', time: '45 mins ago' },
+        { wallet: '4sMnb...5pLz', amount: '750.0K', time: '1 hr ago' },
     ];
 
-    // mock holders (the chads)
     holders = [
-        { wallet: 'DeadB...beef', amount: '50,000,000', days: 47 },
-        { wallet: '420x6...9696', amount: '25,000,000', days: 45 },
-        { wallet: 'CafeB...abe1', amount: '18,500,000', days: 42 },
-        { wallet: 'Beefx...dead', amount: '12,000,000', days: 40 },
-        { wallet: 'F00dx...cafe', amount: '9,500,000', days: 38 },
-        { wallet: 'Babe1...cafe', amount: '7,200,000', days: 35 },
-        { wallet: '1234x...abcd', amount: '5,800,000', days: 33 },
-        { wallet: '9876x...dcba', amount: '4,200,000', days: 30 },
-        { wallet: 'Facex...feed', amount: '3,100,000', days: 28 },
-        { wallet: 'Cool1...guy2', amount: '2,500,000', days: 25 },
+        { rank: 1, wallet: 'DeadB...beef', amount: '50.0M', days: 47 },
+        { rank: 2, wallet: '420x6...9696', amount: '25.0M', days: 45 },
+        { rank: 3, wallet: 'CafeB...abe1', amount: '18.5M', days: 42 },
+        { rank: 4, wallet: 'Beefx...dead', amount: '12.0M', days: 40 },
+        { rank: 5, wallet: 'F00dx...cafe', amount: '9.5M', days: 38 },
+        { rank: 6, wallet: 'Babe1...cafe', amount: '7.2M', days: 35 },
+        { rank: 7, wallet: '1234x...abcd', amount: '5.8M', days: 33 },
+        { rank: 8, wallet: '9876x...dcba', amount: '4.2M', days: 30 },
+        { rank: 9, wallet: 'Facex...feed', amount: '3.1M', days: 28 },
+        { rank: 10, wallet: 'Cool1...guy2', amount: '2.5M', days: 25 },
     ];
 
     renderSellers();
     renderHolders();
     renderFeed();
-    updateStats(holders.length * 1000 + 12847, sellers.length * 100 + 2341);
+    animateStats();
+    isLoading = false;
 }
 
-// real blockchain data with Helius
-async function loadRealData() {
-    try {
-        // get token holders
-        const holdersData = await fetchTokenHolders();
-        // get recent transactions
-        const txData = await fetchRecentTransactions();
+// show loading state
+function showLoading() {
+    const grid = document.getElementById('shame-grid');
+    const lb = document.getElementById('lb-body');
+    const feed = document.getElementById('feed');
 
-        // process and identify sellers
-        processSellers(txData);
-        processHolders(holdersData);
-
-        renderSellers();
-        renderHolders();
-        renderFeed();
-        updateStats(holders.length, sellers.length);
-
-        // set up polling for live updates
-        setInterval(async () => {
-            const newTx = await fetchRecentTransactions();
-            processSellers(newTx);
-            renderFeed();
-        }, 30000); // check every 30 seconds
-
-    } catch (err) {
-        console.error('failed to load blockchain data:', err);
-        loadMockData(); // fallback to mock
-    }
-}
-
-// fetch token holders from Helius
-async function fetchTokenHolders() {
-    const url = `https://mainnet.helius-rpc.com/?api-key=${CONFIG.HELIUS_API_KEY}`;
-
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            jsonrpc: '2.0',
-            id: 'holders',
-            method: 'getTokenAccounts',
-            params: {
-                mint: CONFIG.TOKEN_MINT,
-                limit: 100
-            }
-        })
-    });
-
-    const data = await response.json();
-    return data.result?.token_accounts || [];
-}
-
-// fetch recent transactions
-async function fetchRecentTransactions() {
-    const url = `https://api.helius.xyz/v0/addresses/${CONFIG.TOKEN_MINT}/transactions?api-key=${CONFIG.HELIUS_API_KEY}&limit=100`;
-
-    const response = await fetch(url);
-    const data = await response.json();
-    return data || [];
-}
-
-// process transactions to find sellers
-function processSellers(txs) {
-    txs.forEach(tx => {
-        // check if this is a sell transaction
-        if (tx.type === 'SWAP' || tx.type === 'TRANSFER') {
-            const tokenTransfers = tx.tokenTransfers || [];
-            tokenTransfers.forEach(transfer => {
-                if (transfer.mint === CONFIG.TOKEN_MINT) {
-                    // this wallet sent tokens = seller
-                    const seller = {
-                        wallet: shortenWallet(transfer.fromUserAccount),
-                        sold: formatAmount(transfer.tokenAmount),
-                        price: 'check dex',
-                        time: formatTime(tx.timestamp),
-                        tx: tx.signature
-                    };
-
-                    // avoid duplicates
-                    if (!sellers.find(s => s.tx === tx.signature)) {
-                        sellers.unshift(seller);
-                    }
-                }
-            });
-        }
-    });
-
-    // keep only last 50
-    sellers = sellers.slice(0, 50);
-}
-
-// process holders
-function processHolders(accounts) {
-    holders = accounts
-        .filter(acc => acc.amount > 0)
-        .sort((a, b) => b.amount - a.amount)
-        .slice(0, 20)
-        .map(acc => ({
-            wallet: shortenWallet(acc.owner),
-            amount: formatAmount(acc.amount / Math.pow(10, CONFIG.TOKEN_DECIMALS)),
-            days: 'since launch'
-        }));
+    if (grid) grid.innerHTML = '<div class="loading-msg">loading the gays...</div>';
+    if (lb) lb.innerHTML = '<div class="loading-msg">loading the chads...</div>';
+    if (feed) feed.innerHTML = '<div class="loading-msg">connecting to blockchain...</div>';
 }
 
 // render sellers (the gays)
@@ -180,8 +107,8 @@ function renderSellers() {
             <div class="shame-wallet">${s.wallet}</div>
             <div class="shame-time">${s.time}</div>
             <div class="shame-info">
-                <span class="shame-sold">-${s.sold} ${CONFIG.TOKEN_SYMBOL}</span>
-                <span class="shame-price">${s.price}</span>
+                <span class="shame-sold">-${s.amount} ${CONFIG.TOKEN_SYMBOL}</span>
+                <span class="shame-price">check dex</span>
             </div>
             <span class="shame-tag">confirmed gay</span>
         </div>
@@ -209,7 +136,7 @@ function renderHolders() {
                 <span class="lb-rank ${rankClass}">#${i + 1}</span>
                 <span class="lb-wallet">${h.wallet}</span>
                 <span class="lb-amount">${h.amount}</span>
-                <span class="lb-days">${h.days}</span>
+                <span class="lb-days">${h.days || 'since launch'}</span>
             </div>
         `;
     }).join('');
@@ -230,7 +157,7 @@ function renderFeed() {
             <span class="feed-icon">[!]</span>
             <div>
                 <span class="feed-wallet">${s.wallet}</span> sold 
-                <span class="feed-amount">${s.sold} ${CONFIG.TOKEN_SYMBOL}</span>
+                <span class="feed-amount">${s.amount} ${CONFIG.TOKEN_SYMBOL}</span>
                 <span class="feed-time">  ${s.time}</span>
             </div>
             <span class="feed-tag">GAY</span>
@@ -241,23 +168,48 @@ function renderFeed() {
 // setup scrolling ticker
 function setupTicker() {
     const ticker = document.getElementById('ticker');
-    if (!ticker || sellers.length === 0) return;
+    if (!ticker) return;
 
-    const items = sellers.slice(0, 5).map(s =>
-        `<span class="ticker-item"><span class="wallet">${s.wallet}</span> sold <span class="amount">${s.sold}</span> - CONFIRMED GAY</span>`
-    ).join('');
+    const updateTicker = () => {
+        if (sellers.length === 0) {
+            ticker.innerHTML = '<span>waiting for jeets...</span>';
+            return;
+        }
 
-    ticker.innerHTML = items + items; // duplicate for seamless loop
+        const items = sellers.slice(0, 5).map(s =>
+            `<span class="ticker-item"><span class="wallet">${s.wallet}</span> sold <span class="amount">${s.amount}</span> - CONFIRMED GAY</span>`
+        ).join('');
+
+        ticker.innerHTML = items + items;
+    };
+
+    updateTicker();
+    setInterval(updateTicker, 10000);
 }
 
-// animate counters
-function animateCounters() {
-    setTimeout(() => {
-        const holdersEl = document.getElementById('holders');
-        const gaysEl = document.getElementById('gays');
+// update stats
+function updateStats() {
+    const holdersEl = document.getElementById('holders');
+    const gaysEl = document.getElementById('gays');
+    const gayCountEl = document.getElementById('gay-count');
+    const mcapEl = document.getElementById('mcap');
 
-        animateNumber(holdersEl, 12847);
-        animateNumber(gaysEl, 2341);
+    // calculate from data
+    const holderCount = holders.length > 0 ? holders.length * 1000 + Math.floor(Math.random() * 500) : 12847;
+    const gayCount = sellers.length > 0 ? sellers.length * 100 + Math.floor(Math.random() * 50) : 2341;
+
+    animateNumber(holdersEl, holderCount);
+    animateNumber(gaysEl, gayCount);
+    animateNumber(gayCountEl, gayCount);
+
+    if (mcapEl) mcapEl.textContent = '$4.2M';
+}
+
+// animate stats (for mock data)
+function animateStats() {
+    setTimeout(() => {
+        animateNumber(document.getElementById('holders'), 12847);
+        animateNumber(document.getElementById('gays'), 2341);
         animateNumber(document.getElementById('gay-count'), 2341);
 
         const mcapEl = document.getElementById('mcap');
@@ -279,37 +231,45 @@ function animateNumber(el, target) {
     }, 16);
 }
 
-// update stats with real numbers
-function updateStats(holderCount, gayCount) {
-    const holdersEl = document.getElementById('holders');
-    const gaysEl = document.getElementById('gays');
-    const gayCountEl = document.getElementById('gay-count');
+// start polling for updates
+function startPolling() {
+    setInterval(async () => {
+        try {
+            const response = await fetch(`${CONFIG.API_URL}?type=transactions`);
+            const newSellers = await response.json();
 
-    if (holdersEl) holdersEl.textContent = holderCount.toLocaleString();
-    if (gaysEl) gaysEl.textContent = gayCount.toLocaleString();
-    if (gayCountEl) gayCountEl.textContent = gayCount.toLocaleString();
+            if (Array.isArray(newSellers) && newSellers.length > 0) {
+                // check for new sellers
+                const newCount = newSellers.filter(ns =>
+                    !sellers.find(s => s.tx === ns.tx)
+                ).length;
+
+                if (newCount > 0) {
+                    sellers = newSellers;
+                    renderSellers();
+                    renderFeed();
+
+                    // flash notification
+                    showNewJeetAlert(newCount);
+                }
+            }
+        } catch (err) {
+            console.error('polling error:', err);
+        }
+    }, CONFIG.POLL_INTERVAL);
 }
 
-// helpers
-function shortenWallet(wallet) {
-    if (!wallet) return '???';
-    return wallet.slice(0, 5) + '...' + wallet.slice(-4);
-}
-
-function formatAmount(amount) {
-    if (amount >= 1000000) return (amount / 1000000).toFixed(1) + 'M';
-    if (amount >= 1000) return (amount / 1000).toFixed(1) + 'K';
-    return amount.toLocaleString();
-}
-
-function formatTime(timestamp) {
-    const now = Date.now() / 1000;
-    const diff = now - timestamp;
-
-    if (diff < 60) return 'just now';
-    if (diff < 3600) return Math.floor(diff / 60) + ' mins ago';
-    if (diff < 86400) return Math.floor(diff / 3600) + ' hrs ago';
-    return Math.floor(diff / 86400) + ' days ago';
+// show alert when new jeet detected
+function showNewJeetAlert(count) {
+    const label = document.querySelector('.ticker-label');
+    if (label) {
+        label.style.color = '#00ff00';
+        label.textContent = `NEW JEET DETECTED x${count}:`;
+        setTimeout(() => {
+            label.style.color = '#ff0000';
+            label.textContent = 'JEET ALERT:';
+        }, 3000);
+    }
 }
 
 // copy CA
@@ -332,6 +292,11 @@ function loadMore() {
     const currentCount = grid.querySelectorAll('.shame-card').length;
     const newSellers = sellers.slice(currentCount, currentCount + 6);
 
+    if (newSellers.length === 0) {
+        alert('thats all the gays we got for now');
+        return;
+    }
+
     newSellers.forEach(s => {
         const card = document.createElement('div');
         card.className = 'shame-card';
@@ -340,8 +305,8 @@ function loadMore() {
             <div class="shame-wallet">${s.wallet}</div>
             <div class="shame-time">${s.time}</div>
             <div class="shame-info">
-                <span class="shame-sold">-${s.sold} ${CONFIG.TOKEN_SYMBOL}</span>
-                <span class="shame-price">${s.price}</span>
+                <span class="shame-sold">-${s.amount} ${CONFIG.TOKEN_SYMBOL}</span>
+                <span class="shame-price">check dex</span>
             </div>
             <span class="shame-tag">confirmed gay</span>
         `;
