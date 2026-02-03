@@ -4,7 +4,7 @@
 const HELIUS_API_KEY = process.env.HELIUS_API_KEY || '19526c31-75df-4887-8cd8-01d9ba9b004a';
 const TOKEN_MINT = process.env.TOKEN_MINT || ''; // add your token mint when launched
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     // CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -41,11 +41,10 @@ export default async function handler(req, res) {
         console.error('API Error:', error);
         return res.status(500).json({ error: error.message });
     }
-}
+};
 
 async function getTokenHolders() {
     if (!TOKEN_MINT) {
-        // return mock data if no token launched yet
         return getMockHolders();
     }
 
@@ -68,7 +67,6 @@ async function getTokenHolders() {
     const data = await response.json();
     const accounts = data.result?.token_accounts || [];
 
-    // process and format holders
     return accounts
         .filter(acc => acc.amount > 0)
         .sort((a, b) => b.amount - a.amount)
@@ -84,7 +82,6 @@ async function getTokenHolders() {
 
 async function getTransactions() {
     if (!TOKEN_MINT) {
-        // return mock data if no token launched yet
         return getMockSellers();
     }
 
@@ -100,7 +97,6 @@ async function getTransactions() {
             const tokenTransfers = tx.tokenTransfers || [];
             for (const transfer of tokenTransfers) {
                 if (transfer.mint === TOKEN_MINT && transfer.tokenAmount > 0) {
-                    // wallet sent tokens = seller
                     sellers.push({
                         wallet: shortenWallet(transfer.fromUserAccount),
                         fullWallet: transfer.fromUserAccount,
@@ -116,7 +112,6 @@ async function getTransactions() {
         }
     }
 
-    // dedupe and sort by time
     const unique = [...new Map(sellers.map(s => [s.tx, s])).values()];
     return unique.sort((a, b) => b.timestamp - a.timestamp).slice(0, 50);
 }
@@ -131,7 +126,6 @@ async function getStats() {
         };
     }
 
-    // get real stats from helius
     const [holders, txs] = await Promise.all([
         getTokenHolders(),
         getTransactions()
@@ -145,7 +139,6 @@ async function getStats() {
     };
 }
 
-// mock data for pre-launch
 function getMockHolders() {
     return [
         { rank: 1, wallet: 'DeadB...beef', amount: '50.0M', days: 47 },
