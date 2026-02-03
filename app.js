@@ -1,7 +1,7 @@
 // HOLD OR GAY - Real blockchain data only
 const CONFIG = {
     API_URL: '/api/data',
-    TOKEN_SYMBOL: '$HOG',
+    TOKEN_SYMBOL: '$HOLD',
     POLL_INTERVAL: 30000
 };
 
