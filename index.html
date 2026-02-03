@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOLD OR GAY | if you sell ur literally gay</title>
+    <meta name="description" content="sold? gay. still holding? based. its that simple.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="rainbow-bg"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">
+            <span class="logo-hold">HOLD</span>
+            <span class="logo-or">or</span>
+            <span class="logo-gay">GAY</span>
+        </a>
+        <nav class="nav">
+            <a href="#wall-of-shame">the gays</a>
+            <a href="#diamond-hands">the chads</a>
+            <a href="#how">wtf is this</a>
+        </nav>
+        <a href="#" class="buy-btn">APE IN</a>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">the only coin that matters tbh</div>
+            <h1 class="hero-title">
+                <span class="title-hold">HOLD</span>
+                <span class="title-or">or</span>
+                <span class="title-gay">GAY</span>
+            </h1>
+            <p class="hero-desc">
+                its simple. you buy the coin. you hold the coin.<br>
+                <span class="highlight">if you sell... youre gay.</span><br>
+                everyone will know. your wallet goes on the wall. forever.
+            </p>
+
+            <div class="stats-row">
+                <div class="stat">
+                    <span class="stat-num" id="holders">0</span>
+                    <span class="stat-txt">diamond hands</span>
+                </div>
+                <div class="stat gay-stat">
+                    <span class="stat-num" id="gays">0</span>
+                    <span class="stat-txt">confirmed gays</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num" id="mcap">$0</span>
+                    <span class="stat-txt">mcap</span>
+                </div>
+            </div>
+
+            <div class="ca-box">
+                <span class="ca-label">CA:</span>
+                <span class="ca" id="ca">TBA</span>
+                <button class="copy-btn" onclick="copyCA()">copy</button>
+            </div>
+
+            <div class="btn-row">
+                <a href="#" class="main-btn">BUY $HOG</a>
+                <a href="#" class="outline-btn">dexscreener</a>
+            </div>
+        </div>
+
+        <div class="hero-side">
+            <div class="vs-box">
+                <div class="diamond-icon">CHAD</div>
+                <div class="vs">VS</div>
+                <div class="gay-icon">GAY</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jeet ticker -->
+    <div class="jeet-ticker">
+        <div class="ticker-label">JEET ALERT:</div>
+        <div class="ticker-scroll" id="ticker">
+            <span>loading recent sells...</span>
+        </div>
+    </div>
+
+    <!-- Wall of Shame -->
+    <section class="wall-section" id="wall-of-shame">
+        <div class="section-head">
+            <h2 class="gay-title">THE WALL OF GAYS</h2>
+            <p class="section-desc">these mfs really sold lmaooo. imagine being this gay</p>
+        </div>
+
+        <div class="gay-counter">
+            total gays exposed: <span id="gay-count">0</span>
+        </div>
+
+        <div class="shame-grid" id="shame-grid">
+            <div class="loading-msg">loading the gays...</div>
+        </div>
+
+        <button class="load-btn" onclick="loadMore()">show me more gays</button>
+    </section>
+
+    <!-- Diamond Hands -->
+    <section class="chad-section" id="diamond-hands">
+        <div class="section-head">
+            <h2 class="chad-title">DIAMOND HAND LEGENDS</h2>
+            <p class="section-desc">these absolute units have never sold a single token. kings.</p>
+        </div>
+
+        <div class="leaderboard" id="leaderboard">
+            <div class="lb-header">
+                <span>#</span>
+                <span>wallet</span>
+                <span>bag</span>
+                <span>hodling since</span>
+            </div>
+            <div class="lb-body" id="lb-body">
+                <div class="loading-msg">loading the chads...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-section" id="how">
+        <h2 class="section-title">WTF IS THIS</h2>
+        <div class="how-grid">
+            <div class="how-card">
+                <div class="how-num">1</div>
+                <h3>buy $HOG</h3>
+                <p>ape into $HOG on raydium or jupiter. become part of the family. welcome degen.</p>
+            </div>
+            <div class="how-card">
+                <div class="how-num">2</div>
+                <h3>HODL</h3>
+                <p>just... dont sell? its literally that easy. diamond hands only. no paper hand bitches allowed.</p>
+            </div>
+            <div class="how-card rainbow-card">
+                <div class="how-num">3</div>
+                <h3>or sell and be GAY</h3>
+                <p>sell ur bag? congrats ur on the wall of gays now. everyone sees it. ur wallet is gay forever. no take
+                    backs.</p>
+            </div>
+            <div class="how-card">
+                <div class="how-num">4</div>
+                <h3>moon together</h3>
+                <p>real ones stick together. we moon. the gays stay on the wall watching us succeed. tough luck losers.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live feed -->
+    <section class="feed-section">
+        <h2 class="section-title">LIVE JEET FEED</h2>
+        <p class="section-desc">watching paper hands get exposed in real time</p>
+        <div class="feed" id="feed">
+            <div class="loading-msg">connecting to blockchain...</div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>so... you a <span class="chad-text">CHAD</span> or a <span class="gay-text">GAY</span>?</h2>
+        <p>theres only one way to find out. buy $HOG. dont sell. simple as.</p>
+        <div class="cta-btns">
+            <a href="#" class="main-btn big">BUY $HOG NOW</a>
+            <a href="https://twitter.com" target="_blank" class="social-btn">twitter</a>
+            <a href="https://t.me" target="_blank" class="social-btn">telegram</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">
+            <span class="logo-hold">HOLD</span>
+            <span class="logo-or">or</span>
+            <span class="logo-gay">GAY</span>
+        </div>
+        <div class="footer-links">
+            <a href="#">twitter</a>
+            <a href="#">telegram</a>
+            <a href="#">dexscreener</a>
+        </div>
+        <p class="disclaimer">
+            $HOG is a meme coin. nfa. dyor. if you cant handle losing money dont buy it.
+            also this is all jokes obv we love everyone including the gays on the wall.
+        </p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

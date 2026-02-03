@@ -1,0 +1,937 @@
+/* HOLD OR GAY - chaotic meme energy */
+
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap');
+
+:root {
+    --bg: #0d0d0d;
+    --card-bg: #1a1a1a;
+    --cyan: #00ffff;
+    --pink: #ff00ff;
+    --yellow: #ffff00;
+    --green: #00ff00;
+    --text: #fff;
+    --text-dim: #888;
+    --rainbow: linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #00ffff, #0088ff, #8800ff, #ff00ff);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Comic Neue', cursive;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* rainbow animated bg */
+.rainbow-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 0, 0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    border-bottom: 3px solid;
+    border-image: var(--rainbow) 1;
+}
+
+.logo {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    text-decoration: none;
+    display: flex;
+    gap: 0.3rem;
+    letter-spacing: 2px;
+}
+
+.logo-hold {
+    color: var(--cyan);
+    text-shadow: 0 0 20px var(--cyan);
+}
+
+.logo-or {
+    color: var(--text-dim);
+    font-size: 1rem;
+    font-family: 'Comic Neue';
+}
+
+.logo-gay {
+    background: var(--rainbow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    animation: rainbow 2s linear infinite;
+}
+
+@keyframes rainbow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 200% 50%;
+    }
+}
+
+.nav {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: lowercase;
+    transition: all 0.2s;
+}
+
+.nav a:hover {
+    color: var(--pink);
+    text-shadow: 0 0 10px var(--pink);
+}
+
+.buy-btn {
+    padding: 0.7rem 1.5rem;
+    background: var(--cyan);
+    color: #000;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 0;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0 #000;
+    transition: all 0.1s;
+    text-transform: uppercase;
+}
+
+.buy-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #000;
+}
+
+/* Hero */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 700px;
+}
+
+.hero-tag {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--pink);
+    color: #000;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    transform: rotate(-2deg);
+}
+
+.hero-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(5rem, 15vw, 12rem);
+    line-height: 0.9;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    letter-spacing: 4px;
+}
+
+.title-hold {
+    color: var(--cyan);
+    text-shadow:
+        4px 4px 0 #000,
+        0 0 40px var(--cyan);
+    transform: rotate(-3deg);
+    display: inline-block;
+}
+
+.title-or {
+    font-family: 'Comic Neue';
+    font-size: 2rem;
+    color: var(--text-dim);
+    align-self: center;
+}
+
+.title-gay {
+    background: var(--rainbow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400% 100%;
+    animation: rainbow 3s linear infinite;
+    text-shadow: none;
+    transform: rotate(2deg);
+    display: inline-block;
+}
+
+.hero-desc {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+}
+
+.highlight {
+    color: var(--yellow);
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.stats-row {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.stat {
+    padding: 1.5rem 2rem;
+    background: var(--card-bg);
+    border: 2px solid var(--cyan);
+}
+
+.stat.gay-stat {
+    border-color: transparent;
+    border-image: var(--rainbow) 1;
+    position: relative;
+}
+
+.stat.gay-stat::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+}
+
+.stat-num {
+    display: block;
+    font-family: 'Bangers', cursive;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+}
+
+.gay-stat .stat-num {
+    background: var(--rainbow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    animation: rainbow 2s linear infinite;
+}
+
+.stat-txt {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    text-transform: lowercase;
+}
+
+.ca-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #000;
+    border: 2px dashed var(--text-dim);
+    margin-bottom: 2rem;
+    font-family: monospace;
+    flex-wrap: wrap;
+}
+
+.ca-label {
+    color: var(--text-dim);
+}
+
+.ca {
+    color: var(--cyan);
+    word-break: break-all;
+}
+
+.copy-btn {
+    padding: 0.5rem 1rem;
+    background: var(--yellow);
+    border: 2px solid #000;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.copy-btn:hover {
+    background: var(--green);
+}
+
+.btn-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.main-btn {
+    padding: 1rem 2.5rem;
+    background: var(--cyan);
+    color: #000;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border: 4px solid #000;
+    box-shadow: 6px 6px 0 #000;
+    transition: all 0.1s;
+    text-transform: uppercase;
+}
+
+.main-btn:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 3px 3px 0 #000;
+}
+
+.main-btn.big {
+    font-size: 1.4rem;
+    padding: 1.2rem 3rem;
+}
+
+.outline-btn {
+    padding: 1rem 2.5rem;
+    background: transparent;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border: 4px solid var(--text);
+    transition: all 0.2s;
+}
+
+.outline-btn:hover {
+    background: var(--text);
+    color: #000;
+}
+
+.hero-side {
+    flex: 0 0 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.vs-box {
+    text-align: center;
+}
+
+.diamond-icon,
+.gay-icon {
+    font-family: 'Bangers', cursive;
+    font-size: 3rem;
+    padding: 2rem;
+    letter-spacing: 3px;
+}
+
+.diamond-icon {
+    background: var(--cyan);
+    color: #000;
+    transform: rotate(-5deg);
+}
+
+.gay-icon {
+    background: var(--rainbow);
+    background-size: 200% 100%;
+    animation: rainbow 2s linear infinite;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+    transform: rotate(5deg);
+}
+
+.vs {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: var(--text-dim);
+    padding: 1rem;
+}
+
+/* Jeet ticker */
+.jeet-ticker {
+    background: #000;
+    border-top: 3px solid;
+    border-bottom: 3px solid;
+    border-image: var(--rainbow) 1;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.ticker-label {
+    font-weight: 700;
+    color: #ff0000;
+    white-space: nowrap;
+    animation: blink 0.5s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.ticker-scroll {
+    display: flex;
+    gap: 4rem;
+    animation: scroll 30s linear infinite;
+    white-space: nowrap;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.ticker-item {
+    color: var(--text-dim);
+}
+
+.ticker-item .wallet {
+    color: var(--pink);
+}
+
+.ticker-item .amount {
+    color: var(--yellow);
+}
+
+/* Sections */
+section {
+    padding: 6rem 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+.section-head {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-title {
+    font-family: 'Bangers', cursive;
+    font-size: 3rem;
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
+}
+
+.gay-title {
+    font-family: 'Bangers', cursive;
+    font-size: 4rem;
+    letter-spacing: 4px;
+    background: var(--rainbow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 300% 100%;
+    animation: rainbow 3s linear infinite;
+}
+
+.chad-title {
+    font-family: 'Bangers', cursive;
+    font-size: 4rem;
+    letter-spacing: 4px;
+    color: var(--cyan);
+    text-shadow: 0 0 30px var(--cyan);
+}
+
+.section-desc {
+    color: var(--text-dim);
+    font-size: 1.2rem;
+}
+
+/* Wall of shame */
+.wall-section {
+    background: linear-gradient(180deg, transparent, rgba(255, 0, 255, 0.05), transparent);
+}
+
+.gay-counter {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+    color: var(--text-dim);
+}
+
+.gay-counter span {
+    font-family: 'Bangers', cursive;
+    font-size: 3rem;
+    background: var(--rainbow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    animation: rainbow 2s linear infinite;
+}
+
+.shame-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto 3rem;
+}
+
+.shame-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border: 3px solid;
+    border-image: var(--rainbow) 1;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.shame-card::before {
+    content: 'GAY';
+    position: absolute;
+    top: -15px;
+    right: 20px;
+    background: var(--rainbow);
+    padding: 0.3rem 1rem;
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    color: #fff;
+    transform: rotate(5deg);
+}
+
+.shame-card:hover {
+    transform: rotate(1deg) scale(1.02);
+}
+
+.shame-wallet {
+    font-family: monospace;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--pink);
+}
+
+.shame-time {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.shame-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.shame-sold {
+    color: #ff0000;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.shame-price {
+    color: var(--text-dim);
+}
+
+.shame-tag {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--rainbow);
+    background-size: 200% 100%;
+    animation: rainbow 2s linear infinite;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.load-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    background: transparent;
+    border: 3px solid;
+    border-image: var(--rainbow) 1;
+    color: var(--text);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.load-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.loading-msg {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 2rem;
+    grid-column: 1 / -1;
+}
+
+/* Leaderboard */
+.chad-section {
+    background: linear-gradient(180deg, transparent, rgba(0, 255, 255, 0.05), transparent);
+}
+
+.leaderboard {
+    max-width: 1000px;
+    margin: 0 auto;
+    border: 3px solid var(--cyan);
+    background: var(--card-bg);
+}
+
+.lb-header {
+    display: grid;
+    grid-template-columns: 60px 1fr 150px 150px;
+    padding: 1rem 1.5rem;
+    background: rgba(0, 255, 255, 0.1);
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: lowercase;
+}
+
+.lb-body {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.lb-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 150px 150px;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #333;
+    transition: background 0.2s;
+}
+
+.lb-row:hover {
+    background: rgba(0, 255, 255, 0.05);
+}
+
+.lb-rank {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+}
+
+.lb-rank.gold {
+    color: #ffd700;
+}
+
+.lb-rank.silver {
+    color: #c0c0c0;
+}
+
+.lb-rank.bronze {
+    color: #cd7f32;
+}
+
+.lb-wallet {
+    font-family: monospace;
+}
+
+.lb-amount {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.lb-days {
+    color: var(--cyan);
+}
+
+/* How section */
+.how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.how-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border: 3px solid #333;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.how-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--cyan);
+}
+
+.how-card.rainbow-card {
+    border-image: var(--rainbow) 1;
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+}
+
+.how-num {
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: var(--cyan);
+    color: #000;
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rainbow-card .how-num {
+    background: var(--rainbow);
+    background-size: 200% 100%;
+    animation: rainbow 2s linear infinite;
+}
+
+.how-card h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.8rem;
+    margin: 1rem 0;
+    letter-spacing: 2px;
+}
+
+.how-card p {
+    color: var(--text-dim);
+    line-height: 1.6;
+}
+
+/* Feed */
+.feed-section {
+    text-align: center;
+}
+
+.feed {
+    max-width: 800px;
+    margin: 2rem auto 0;
+}
+
+.feed-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--card-bg);
+    border-left: 4px solid;
+    border-image: var(--rainbow) 1;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.feed-icon {
+    color: #ff0000;
+    font-weight: 700;
+}
+
+.feed-wallet {
+    font-family: monospace;
+    color: var(--pink);
+}
+
+.feed-amount {
+    color: var(--yellow);
+    font-weight: 700;
+}
+
+.feed-time {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+}
+
+.feed-tag {
+    margin-left: auto;
+    padding: 0.3rem 0.8rem;
+    background: var(--rainbow);
+    background-size: 200% 100%;
+    animation: rainbow 2s linear infinite;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+/* CTA */
+.cta-section {
+    text-align: center;
+    padding: 8rem 4rem;
+}
+
+.cta-section h2 {
+    font-family: 'Bangers', cursive;
+    font-size: 3rem;
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
+}
+
+.chad-text {
+    color: var(--cyan);
+    text-shadow: 0 0 20px var(--cyan);
+}
+
+.gay-text {
+    background: var(--rainbow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    animation: rainbow 2s linear infinite;
+}
+
+.cta-section p {
+    color: var(--text-dim);
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.cta-btns {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.social-btn {
+    padding: 1rem 2rem;
+    background: transparent;
+    border: 3px solid var(--text-dim);
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+
+.social-btn:hover {
+    border-color: var(--pink);
+    color: var(--pink);
+}
+
+/* Footer */
+.footer {
+    padding: 4rem;
+    text-align: center;
+    border-top: 3px solid;
+    border-image: var(--rainbow) 1;
+    background: #000;
+}
+
+.footer-logo {
+    font-family: 'Bangers', cursive;
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+    margin-bottom: 2rem;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: var(--pink);
+}
+
+.disclaimer {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .hero {
+        flex-direction: column;
+        padding: 6rem 2rem 3rem;
+    }
+
+    .hero-side {
+        display: none;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    section {
+        padding: 4rem 2rem;
+    }
+
+    .lb-header,
+    .lb-row {
+        grid-template-columns: 50px 1fr 100px;
+    }
+
+    .lb-header span:last-child,
+    .lb-row>*:last-child {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .logo {
+        font-size: 1.5rem;
+    }
+
+    .stats-row {
+        flex-direction: column;
+    }
+
+    .stat {
+        width: 100%;
+    }
+
+    .shame-grid {
+        grid-template-columns: 1fr;
+    }
+}
